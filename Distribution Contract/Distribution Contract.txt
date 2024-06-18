@@ -1,0 +1,53 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.25;
+
+contract Token {
+    mapping(address => uint) public balances;
+    mapping(address => mapping(address => uint)) public allowance;
+    uint public totalSupply;
+    string public name;
+    string public symbol;
+    uint public decimals = 18;
+    address public contractOwner;
+    uint public feePercentage = 1; 
+    
+    event Transfer(address indexed from, address indexed to, uint value);
+    event Approval(address indexed owner, address indexed spender, uint value);
+    event FeePercentageChanged(uint newFeePercentage);
+    
+    constructor(uint256 initialSupply, string memory tokenName, string memory tokenSymbol) {
+        totalSupply = initialSupply * 10 ** decimals;
+        balances[msg.sender] = totalSupply;
+        name = tokenName;
+        symbol = tokenSymbol;
+        contractOwner = msg.sender; 
+    }
+    
+    function balanceOf(address owner) public view returns(uint) {
+        return balances[owner];
+    }
+    
+    function transfer(address to, uint value) public returns(bool) {
+        require(balanceOf(msg.sender) >= value, 'balance too low');
+        balances[to] += value;
+        balances[msg.sender] -= value;
+        emit Transfer(msg.sender, to, value);
+        return true;
+    }
+    
+    function setFeePercentage(uint newFeePercentage) public {
+        require(msg.sender == contractOwner, "Only owner can set fee percentage"); 
+        feePercentage = newFeePercentage;
+        emit FeePercentageChanged(newFeePercentage);
+    }
+    
+    function approve(address spender, uint value) public returns (bool) {
+        allowance[msg.sender][spender] = value;
+        emit Approval(msg.sender, spender, value);
+        return true;   
+    }
+
+    function changeName(string memory newName) public {
+        name = newName;
+    }
+}

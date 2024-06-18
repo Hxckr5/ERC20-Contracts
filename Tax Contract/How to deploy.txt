@@ -1,0 +1,38 @@
+Thank you for your Purchase!
+
+Here are a list of isntructions on hos 
+
+1. **Access a Smart Contract Deployment Platform**: You can use various platforms for deploying smart contracts such as Remix, Truffle, Hardhat, or even directly interact with the Binance Smart Chain using tools like MetaMask and Binance Smart Chain Wallet. Remix is highly recommended for your project & a personal choice.  
+
+2. **Compile the Smart Contract**: If you're using Remix, copy the contract code into a new file named `Token.sol`. Then, compile the contract by selecting the appropriate compiler version (e.g., 0.8.2).
+
+3. **Connect to Binance Smart Chain**: If you're using MetaMask or Binance Smart Chain Wallet, ensure that you're connected to the Binance Smart Chain network.
+
+4. **Deploy the Contract**:
+   - In Remix:
+     - Go to the "Deploy & Run Transactions" tab.
+     - Make sure you're using the "Injected Web3" environment to connect Remix with your MetaMask or Binance Smart Chain Wallet.
+     - Select the Token contract from the list of available contracts.
+     - Enter the parameters required for deployment:
+       - `initialSupply`: The initial supply of tokens.
+       - `tokenName`: The name of the token.
+       - `tokenSymbol`: The symbol of the token.
+       - `taxAddress`: The address where the collected tax will be sent.
+     - Click on the "Deploy" button.
+     - Confirm the transaction in MetaMask or Binance Smart Chain Wallet.
+     - Wait for the transaction to be confirmed on the blockchain.
+
+5. **Interact with the Contract**: After deployment, you can interact with the deployed contract by calling its functions. For example:
+   - You can transfer tokens between addresses using the `transfer` function.
+   - You can set the tax rate, liquidity share, redistribution percentage, and fee percentage using the corresponding setter functions.
+   - You can approve token transfers using the `approve` function.
+
+6. **Monitor Events**: You can monitor events emitted by the contract, such as `Transfer`, `Approval`, `FeePercentageChanged`, and `TaxPaid`, to track token transfers, changes in fee percentage, and tax payments.
+
+7. **Security Considerations**: Ensure that you review the contract code thoroughly before deployment to ensure it meets your security requirements. Additionally, consider using multi-signature wallets for contract ownership and implementing access controls for sensitive functions.
+
+8. **Testing**: After deployment, thoroughly test the contract functionality to ensure it behaves as expected and handles edge cases correctly.
+
+9. **Documentation and Communication**: Document the deployed contract's address, ABI (Application Binary Interface), and key parameters for future reference. Communicate the contract's deployment to relevant stakeholders and users.
+
+10. **Maintenance**: Regularly monitor and maintain the deployed contract to address any issues, implement updates, and ensure its continued functionality and security.
