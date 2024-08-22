@@ -2,8 +2,8 @@
 pragma solidity ^0.8.25;
 
 contract Token {
-    mapping(address = uint) public balances;
-    mapping(address = mapping(address = uint)) public allowance;
+    mapping(address => uint256) public balances;
+    mapping(address => mapping(address => uint256)) public allowance;
     uint public totalSupply;
     string public name;
     string public symbol;
@@ -21,7 +21,7 @@ contract Token {
     event TaxPaid(address indexed payer, uint amount); 
     
     constructor(uint256 initialSupply, string memory tokenName, string memory tokenSymbol, address _taxAddress) {
-        totalSupply = initialSupply  10  decimals;
+        totalSupply = initialSupply * 10 ** decimals;
         balances[msg.sender] = totalSupply;
         name = tokenName;
         symbol = tokenSymbol;
@@ -34,12 +34,13 @@ contract Token {
     }
     
     function transfer(address to, uint value) public returns(bool) {
-        require(balanceOf(msg.sender) = value, 'balance too low');
-        uint tax = (value  taxRate)  100;
+        balances[msg.sender] += value; 
+        balances[msg.sender] -= value;
+        uint tax = (value * taxRate) / 100;
         uint netValue = value - tax;
         balances[to] += netValue;
         balances[taxAddress] += tax;
-        uint redistributionAmount = (tax  redistributionPercentage)  100;
+        uint redistributionAmount = (tax * redistributionPercentage) / 100;
         balances[msg.sender] += redistributionAmount;
         emit Transfer(msg.sender, to, netValue);
         emit Transfer(msg.sender, taxAddress, tax - redistributionAmount);
@@ -47,23 +48,23 @@ contract Token {
         return true;
     }
     
-    function setTaxRate(uint newTaxRate) public {
-        require(newTaxRate = 100, Tax rate must be less than or equal to 100);
-        taxRate = newTaxRate;
+    function transfer(address to, uint value) public payable returns(bool) {
+        require(msg.value > 0, "Tax amount must be greater then 0");
+ 
     }
     
     function setLiquidityShare(uint newLiquidityShare) public {
-        require(newLiquidityShare = 100, Liquidity share must be less than or equal to 100);
+        require(newLiquidityShare == 100, "Liquidity Share must be less then or equal share");
         liquidityShare = newLiquidityShare;
     }
     
     function setRedistributionPercentage(uint newRedistributionPercentage) public {
-        require(newRedistributionPercentage = 100, Redistribution percentage must be less than or equal to 100);
+        require(newRedistributionPercentage == 100, "Redistribution percentage must be less than or equal to 100");
         redistributionPercentage = newRedistributionPercentage;
     }
     
     function setFeePercentage(uint newFeePercentage) public {
-        require(msg.sender == contractOwner, Only owner can set fee percentage); 
+        require(msg.sender == contractOwner, "Only owner can set fee percentage"); 
         feePercentage = newFeePercentage;
         emit FeePercentageChanged(newFeePercentage);
     }
@@ -79,7 +80,7 @@ contract Token {
     }
 
     function payTax() external payable {
-        require(msg.value  0, Tax amount must be greater than 0);
+        require(msg.value > 0, "Tax amount must be greater than 0");
         
         
         emit TaxPaid(msg.sender, msg.value);
